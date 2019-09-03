@@ -1,28 +1,360 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="content">
+      <transition :name="transitionName">
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+      </transition>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import tarifScope from './components/tarifScope.vue'
 
 export default {
   name: 'app',
+  data () {
+    return {
+      transitionName: 'slide'
+    }
+  },
   components: {
-    HelloWorld
+    tarifScope
+  },
+  watch: {
+    '$route' (to, from) {
+      const toPath = to.path
+      const fromPath = from.path
+
+      if (fromPath === '/tarif_detail') {
+        return this.transitionName = 'slide-left'
+      } else if (fromPath === '/tarif_scope' && toPath === '/') {
+        return this.transitionName = 'slide-left'
+      } else {
+        return this.transitionName = 'slide'
+      }
+    }
   }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+* {
+    margin: 0;
+    padding: 0;
 }
+
+body {
+    background: #efeff4;
+    font-family: sans-serif;
+}
+
+.content {
+  width: 100%;
+  max-width: 1024px;
+  min-height: 100vh;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.tarif {
+  padding: 0 0 0 15px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #d6d6d9;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+
+  &-wrapper {
+      background: #FFFFFF;
+      margin-bottom: 20px;
+      padding: 0 0 0 15px;
+  }
+
+  &-header {
+      color: #84c22f;
+      font-weight: bold;
+      padding: 10px 0;
+  }
+
+  &-description {
+    padding: 10px 0;
+    border-top: 1px solid #d6d6d9;
+    flex: 1;
+
+    &--no-bb {
+      border-bottom: none;
+    }
+
+    &--rigth-arrow {
+      position: relative;
+    }
+  }
+
+  &-speed {
+    color: #FFFFFF;
+    font-weight: bold;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: -15px;
+    padding: 5px 5px 5px 15px;
+    margin-bottom: 10px;
+  }
+
+  &-payment {
+    font-weight: bold;
+    padding: 5px 0;
+  }
+
+  &-free-options__item {
+    font-size: 14px;
+  }
+
+  &-link {
+    font-size: 14px;
+    padding: 10px 0;
+    border-top: 1px solid #d6d6d9;
+
+    &__a {
+      color: #4aa0ff;
+      text-decoration: none;
+    }
+  }
+}
+
+.tarifs-scope {
+    background: #efeff4;
+
+    &__head {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      padding: 10px 0;
+      margin-bottom: 20px;
+      background: #f7f7f8;
+      border-bottom: 1px solid #e2e2e4;
+  }
+}
+
+.padding {
+    padding: 10px 0;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.left-arrow {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+
+  &-container {
+    position: relative;
+  }
+
+  &:after, &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    background-color: #84c22f;    
+    width: 100%;
+    height: 2px;
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+    top: 1px;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+    bottom: 2px;
+  }
+}
+
+.rigth-arrow {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+
+  &:after, &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    background-color: #dddde0;    
+    width: 100%;
+    height: 2px;
+  }
+
+  &:after {
+    transform: rotate(45deg);
+    top: 2px;
+  }
+
+  &:before {
+    transform: rotate(-45deg);
+    bottom: 2px;
+  }
+}
+
+.tarif-detail {
+  background: #efeff4;
+
+  &-container {
+    background: #FFFFFF;
+    padding-left: 15px;
+  }
+
+  &__footer {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 15px;
+  }
+}
+
+.sky-button {
+  width: 100%;
+  height: 40px;
+  background: #84c22f;
+  border: none;
+  outline: none;
+  color: #FFFFFF;
+  cursor: pointer;
+
+  &:active {
+    box-shadow: inset 0px -2px 5px #777777;
+  }
+}
+
+.text-grey {
+    color: #b6b6b6;
+    font-size: 14px;
+}
+
+.earth {
+    background: #756645;
+}
+
+.water {
+    background: #0075d9;
+}
+
+.fire {
+    background: #e74807;
+}
+
+.slide {
+  &-enter {
+    left: 100%;
+  }
+
+  &-enter-to {
+    left: 0;
+  }
+
+  &-leave-to {
+    left: -100%;
+  }
+
+  &-leave {
+    left: 0%;
+  }
+
+  &-enter-active, &-leave-active {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    transition: 0.3s ease-in-out
+  }
+}
+
+.slide-left{
+  &-enter {
+    left: -100%;
+  }
+
+  &-enter-to {
+    left: 0;
+  }
+
+  &-leave-to {
+    left: 100%;
+  }
+
+  &-leave {
+    left: 0%;
+  }
+
+  &-enter-active, &-leave-active {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    transition: 0.3s ease-in-out
+  }
+}
+
+.border-bottom {
+  border-bottom: 1px solid #b6b6b6;
+  
+}
+
+.router-link {
+  text-decoration: none;
+  color: inherit;
+
+  &:active, &:visited {
+    color: inherit;
+  }
+}
+
+.flex-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 640px) {
+  .tarifs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+  }
+
+  .tarif {
+    margin-bottom: 0px;
+
+    &-wrapper {
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-start;
+      flex-direction: column;
+      margin-bottom: 0px;
+    }
+
+    &-link {
+      margin-top: auto;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .tarifs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 </style>
