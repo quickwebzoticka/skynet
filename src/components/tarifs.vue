@@ -7,9 +7,7 @@
             <div class="tarif-header">Тариф "{{ tarif.title }}"</div>
             <div class="tarif-description tarif-description--rigth-arrow">
                 <div class="rigth-arrow"></div>
-                <div class="tarif-speed" :class="{ earth: tarif.title.toLowerCase().indexOf('земля') > -1,
-                                                            water: tarif.title.toLowerCase().indexOf('вода') > -1,
-                                                            fire: tarif.title.toLowerCase().indexOf('огонь') > -1 }">
+                <div class="tarif-speed" :class="colorSpeed(tarif)">
                                                             {{ tarif.speed }} Мбит/с
                 </div>
                 <div class="tarif-payment">{{ prices[index].min }} - {{ prices[index].max }} ₽/мес</div>
@@ -53,6 +51,14 @@ export default {
             }
             return prices;
         }
+    },
+    methods: {
+        colorSpeed (tarif) {
+            if ( tarif.title.toLowerCase().indexOf('земля') > -1 ) return 'earth'
+            if ( tarif.title.toLowerCase().indexOf('вода') > -1 ) return 'water'
+            if ( tarif.title.toLowerCase().indexOf('огонь') > -1 ) return 'fire'
+        }
+        
     },
     mounted() {
         axios.get('./data.json')

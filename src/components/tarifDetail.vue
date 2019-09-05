@@ -10,7 +10,7 @@
           <div class="tarif-header">Тариф "{{ tarif.title }}"</div>
           <div class="tarif-description">
               <div class="padding">
-                  <div class="tarif-description-row text-bold">Период оплаты - {{ tarif.pay_period }} {{ tarif.pay_period | monthText }}</div>
+                  <div class="tarif-description-row text-bold">Период оплаты - {{ tarif.pay_period }} {{ monthText(tarif.pay_period) }}</div>
                   <div class="tarif-description-row text-bold">{{ monthlyPayment }} ₽/мес</div>
               </div>
               <div class="padding">
@@ -57,13 +57,6 @@ export default {
       console.log(total)
       
       return `${('0' + total.getDate()).slice(-2)}.${('0' + (total.getMonth() + 1)).slice(-2)}.${total.getFullYear()}`
-    }
-  },
-  filters: {
-    monthText (value) {
-      if (parseInt(value) === 1) return 'Месяц'
-      if (parseInt(value) > 1 && parseInt(value) < 5) return 'Месяца'
-      if (parseInt(value) >= 5) return 'Месяцев'
     }
   },
   activated () {
